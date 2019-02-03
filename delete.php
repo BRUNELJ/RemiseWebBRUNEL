@@ -1,7 +1,13 @@
 <?php
 require __DIR__ . '/functions.php';
 
-deleteMonster($_POST['name']);
-header('Location: index.php');
+if(isset($_POST['name'])) {
+	deleteMonster($_POST['name']);
+} else {
+	header('Location: /index.php?error=missing_data');
+	die;
+}
 
+header('Location: index.php');
+die
 ?>

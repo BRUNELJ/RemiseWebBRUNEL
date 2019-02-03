@@ -45,8 +45,12 @@ function fight(Monster $firstMonster, Monster $secondMonster)
 }
 
 function getMonsters_PDO(){
-    //Connexion à la base de données "mymonsters" via une instance de la classe PDO
-     $base = new PDO('mysql:host=localhost;dbname=mymonsters', 'root', '');
+    try{
+        //Connexion à la base de données "mymonsters" via une instance de la classe PDO
+        $base = new PDO('mysql:host=localhost;dbname=mymonsters', 'root', '');
+    } catch (Exception $e) {
+        die("Database connection failed".$e->getMessage());
+    }
      //initialisation d'une requête pour récupérer les monstres de ma base
      $query = $base->query("SELECT * FROM monsters");
      $monsters = array();
@@ -61,7 +65,11 @@ function getMonsters_PDO(){
 
 
 function addMonster($name,$strength,$life,$type) {
-    $base = new PDO('mysql:host=localhost;dbname=mymonsters', 'root', '');
+    try {
+        $base = new PDO('mysql:host=localhost;dbname=mymonsters', 'root', '');
+    } catch (Exception $e) {
+        die("Database connection failed".$e->getMessage());
+    }
     $query = $base->prepare('INSERT INTO monsters VALUES (?,?,?,?)');
     //preparation d'une requête pour insérer des monstres dans la table monsters
     $query->execute(array($name,$strength,$life,$type));
@@ -69,7 +77,11 @@ function addMonster($name,$strength,$life,$type) {
 }
 
 function deleteMonster($name) {
-    $base = new PDO('mysql:host=localhost;dbname=mymonsters', 'root', '');
+    try {
+        $base = new PDO('mysql:host=localhost;dbname=mymonsters', 'root', '');
+    } catch (Exception $e) {
+        die("Database connection failed".$e->getMessage());
+    }
     $query = $base->prepare('DELETE FROM monsters WHERE name = ?');
     $query->execute(array($name));
 }
